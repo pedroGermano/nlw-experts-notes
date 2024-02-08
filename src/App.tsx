@@ -1,7 +1,10 @@
+import logo from "./assets/logo-nlw-expert.svg";
+
 export function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello World!
-    </h1>
+    <div className="mx-auto max-w-6xl my-12">
+      <img src={logo} alt="logo" />
+      <input type="text" placeholder="Busque as suas notas..." />
+    </div>
   )
 }
