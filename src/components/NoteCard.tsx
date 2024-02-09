@@ -17,7 +17,10 @@ export function NoteCard({ note }: NoteCardProps) {
         <p className="text-sm leading-6 text-slate-400">{note.content}</p>
         <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-black/0 point-events-none" />
       </Dialog.Trigger>
-      <Dialog.Content>Oi</Dialog.Content>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/60" />
+        <Dialog.Content>Oi</Dialog.Content>
+      </Dialog.Portal>
     </Dialog.Root>
   );
 }
