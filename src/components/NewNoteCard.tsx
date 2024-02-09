@@ -1,7 +1,20 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { ChangeEvent, useState } from "react";
 
 export function NewNoteCard() {
+  const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
+
+  function handleStartEditor() {
+    setShouldShowOnboarding(false);
+  }
+
+  function handleContentChanged(event: ChangeEvent<HTMLTextAreaElement>) {
+    if (event.target.value === "") {
+      setShouldShowOnboarding(true);
+    }
+  }
+
   return (
     <Dialog.Root>
       <Dialog.Trigger className="flex flex-col gap-3 p-5 text-left rounded-md outline-none bg-slate-700 hover:ring-2 hover:ring-slate-600 hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-lime-400">
@@ -23,17 +36,29 @@ export function NewNoteCard() {
               Adicionar nota
             </span>
 
-            <p className="text-sm leading-6 text-slate-400">
-              Comece a
-              <button className="font-medium text-lime-400 hover:underline">
-                gravando uma nota
-              </button>
-              em áudio ou se preferir
-              <button className="font-medium text-lime-400 hover:underline">
-                utilize apenas texto.
-              </button>
-            </p>
+            {shouldShowOnboarding ? (
+              <p className="text-sm leading-6 text-slate-400">
+                Comece a{" "}
+                <button className="font-medium text-lime-400 hover:underline">
+                  gravando uma nota
+                </button>{" "}
+                em áudio ou se preferir{" "}
+                <button
+                  onClick={handleStartEditor}
+                  className="font-medium text-lime-400 hover:underline"
+                >
+                  utilize apenas texto.
+                </button>
+              </p>
+            ) : (
+              <textarea
+                autoFocus
+                className="flex-1 text-sm leading-6 bg-transparent outline-none resize-none text-slate-400"
+                onChange={handleContentChanged}
+              />
+            )}
           </div>
+
           <button
             type="button"
             className="w-full py-4 text-sm font-medium text-center outline-none bg-lime-400 text-lime-950 hover:bg-lime-500"
@@ -45,4 +70,3 @@ export function NewNoteCard() {
     </Dialog.Root>
   );
 }
-
