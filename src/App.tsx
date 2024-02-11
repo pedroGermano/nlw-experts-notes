@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import logo from "./assets/logo-nlw-expert.svg";
 import { NewNoteCard } from "./components/NewNoteCard";
 import { NoteCard } from "./components/NoteCard";
@@ -12,6 +12,8 @@ interface Note{
 
 
 export function App() {
+  const [search, setSearch] = useState('')
+
   const [notes, setNotes] = useState<Note[]>(() => {
     const notesOnStorage = localStorage.getItem('notes')
 
@@ -35,6 +37,15 @@ export function App() {
     localStorage.setItem('notes', JSON.stringify(notesArray))
   }
 
+  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value
+    setSearch(query)
+  }
+
+  const filteredNotes = search !== '' 
+    ? notes.filter(note => note.content.includes(search))
+    : notes
+
   return (
     <div className="max-w-6xl mx-auto my-12 space-y-6">
       <img src={logo} alt="logo" />
@@ -44,6 +55,7 @@ export function App() {
           type="text"
           placeholder="Busque as suas notas..."
           className="w-full text-3xl font-semibold tracking-tight bg-transparent outline-none placeholder:text-slate-500"
+          onChange={handleSearch}
         />
       </form>
 
@@ -52,8 +64,8 @@ export function App() {
       <div className="grid grid-cols-3 gap-6 auto-rows-[250px]">
         <NewNoteCard onNoteCreated={onNoteCreated} />
 
-        {notes.map(note =>  {
-          return <NoteCard key={note.id} note={note}/>
+        {filteredNotes.map(note =>  {
+          return <NoteCard key={note.id} note={note} />
         })}
       </div>
     </div>
